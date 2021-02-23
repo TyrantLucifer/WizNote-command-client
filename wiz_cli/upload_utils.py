@@ -6,17 +6,18 @@
 @time: 2021/2/23 16:34
 @desc: 
 """
+import json
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 from wiz_cli.login_utils import *
 from wiz_cli.parse_utils import *
 
 
-class Upload(object):
+class UploadNote(object):
 
-    def __init__(self, file):
-        self.user_login = UserLogin()
-        self.user_login.get_token()
+    def __init__(self, file, category):
+        UserLogin.get_token()
         self.file = file
+        self.category = category
         self.upload_url = "{0}/ks/note/create/{1}".format(Setting.get_value("kb_server"),
                                                           Setting.get_value("kb_guid"))
         self.headers = {
@@ -24,16 +25,16 @@ class Upload(object):
         }
         self.doc_guid = ""
 
-    def upload_empty_note(self, category):
+    def upload_empty_note(self):
         html = "<html><head></head><body></body></html>"
         data = {
             "kbGuid": Setting.get_value("kb_guid"),
             "html": html,
             "title": self.file,
-            "category": category
+            "category": self.category
         }
         self.headers["Content-Type"] = "application/json"
-        result = requests.post(self.upload_url, headers=self.headers, data=data)
+        result = requests.post(self.upload_url, headers=self.headers, data=json.dumps(data))
         result_dict = result.json()
         if result_dict['returnCode'] == 200:
             self.doc_guid = result_dict['result']['docGuid']
@@ -65,6 +66,7 @@ class Upload(object):
             name = result_dict['name']
             url = result_dict['url']
             logger.info("Upload resource: {0} successfully.".format(resource))
+            logger.debug("Resource information, name: {0}, url: {1}".format(name, url))
             return name, url
         else:
             logger.error("Upload resource: {0} failed.".format(resource))
@@ -76,8 +78,48 @@ class Upload(object):
         for resource in resources:
             name, url = self.upload_resource(resource)
             resources_list.append(name)
-            parse_markdown.content = re.sub(repr(resource),
-                                            url,
-                                            parse_markdown.content,
-                                            re.S)
+            parse_markdown.content = parse_markdown.content.replace(resource, url)
+        data = {
+            "html": parse_markdown.content,
+            "resources": resources_list,
+            "docGuid": self.doc_guid,
+            "kbGuid": Setting.get_value("kb_guid")
+        }
 
+        self.headers['Content-Type'] = "application/json"
+
+        upload_url = "{0}/ks/note/save/{1}/{2}".format(Setting.get_value("kb_server"),
+                                                       Setting.get_value("kb_guid"),
+                                                       self.doc_guid)
+        result = requests.put(upload_url, headers=self.headers, data=json.dumps(data))
+        result_dict = result.json()
+        if result_dict['returnCode'] == 200:
+            logger.info("Upload note: {0} successfully.".format(self.file))
+        else:
+            logger.error("Upload note: {0} failed.".format(self.file))
+            logger.error("Failed reason: {0}".format(result_dict['returnMessage']))
+
+    def upload(self):
+        self.upload_empty_note()
+        self.upload_note()
+
+
+class GetInfo(object):
+
+    def __init__(self):
+        UserLogin.get_token()
+        self.headers = {
+            "X-Wiz-Token": Setting.get_value("token")
+        }
+
+    def get_all_categories(self):
+        request_url = "{0}/ks/category/all/{1}".format(Setting.get_value("kb_server"),
+                                                       Setting.get_value("kb_guid"))
+        result = requests.get(request_url, headers=self.headers)
+        result_dict = result.json()
+        if result_dict["returnCode"] == 200:
+            logger.info("Get all list of categories successfully.")
+            return result_dict['result']
+        else:
+            logger.error("Get all list of categories failed.")
+            logger.error("Failed reason: {0}".format(result_dict['returnMessage']))

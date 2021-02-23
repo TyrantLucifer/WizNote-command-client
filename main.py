@@ -15,9 +15,11 @@ def get_parser():
                                      epilog='Powered by tyrantlucifer. If you have any questions, you can send e-mail '
                                             'to tyrantlucifer@gmail.com')
 
-    parser.add_argument("--set-username", metavar="username", help="set wiz username")
-    parser.add_argument("--set-password", metavar="password", help="set wiz password")
-    parser.add_argument("--login", action="store_true", help="login wiz note")
+    parser.add_argument("-su", "--set-username", metavar="username", help="set wiz username")
+    parser.add_argument("-sp", "--set-password", metavar="password", help="set wiz password")
+    parser.add_argument("-c", "--category", metavar="category", help="assign note category")
+    parser.add_argument("-u", "--upload", metavar="file", help="assign note file")
+    parser.add_argument("-lc", "--list-category", action="store_true", help="list all valid category")
     parser.add_argument("-v", "--version", action="store_true", help="display version")
     return parser
 
@@ -29,8 +31,10 @@ def main():
         UpdateConfigurations.update_username(args.set_username)
     elif args.set_password:
         UpdateConfigurations.update_password(args.set_password)
-    elif args.login:
-        Upload.login()
+    elif args.upload and args.category:
+        Upload.upload(args.upload, args.category)
+    elif args.list_category:
+        Display.display_categories()
     else:
         parser.print_help()
 

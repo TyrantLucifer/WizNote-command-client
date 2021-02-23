@@ -27,6 +27,7 @@ class InitConfig(object):
         self.kb_server = ""
         self.kb_guid = ""
         self.token = ""
+        self.token_time = ""
         self.wiz_server = "https://as.wiz.cn"
         self.home_dir = os.path.expanduser('~')
         self.config_dir = os.path.join(self.home_dir,
@@ -53,6 +54,7 @@ class InitConfig(object):
         config.set('default', 'kb_server', self.kb_server)
         config.set('default', 'kb_guid', self.kb_guid)
         config.set('default', 'wiz_server', self.wiz_server)
+        config.set('default', 'token_time', self.wiz_server)
         with open(self.config_file, 'w+') as file:
             config.write(file)
 

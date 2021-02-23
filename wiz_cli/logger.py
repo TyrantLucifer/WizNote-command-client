@@ -6,9 +6,9 @@
 @time: 2021/2/23 13:09
 @desc: 
 """
+import time
 import sys
 import logging
-import time
 from wiz_cli.init_utils import *
 
 # 初始化工具类init_utils.InitConfig
