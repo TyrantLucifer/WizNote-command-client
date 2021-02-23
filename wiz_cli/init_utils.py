@@ -60,7 +60,7 @@ class InitConfig(object):
         config.set('default', 'kb_server', self.kb_server)
         config.set('default', 'kb_guid', self.kb_guid)
         config.set('default', 'wiz_server', self.wiz_server)
-        config.set('default', 'token_time', self.wiz_server)
+        config.set('default', 'token_time', "1990-01-01 00:00:00")
         with open(self.config_file, 'w+') as file:
             config.write(file)
 

@@ -35,6 +35,8 @@ def main():
         Upload.upload(args.upload, args.category)
     elif args.list_category:
         Display.display_categories()
+    elif args.version:
+        Display.display_version()
     else:
         parser.print_help()
 
