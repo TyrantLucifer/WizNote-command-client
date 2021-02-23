@@ -11,13 +11,19 @@ from wiz_cli.setting_utils import *
 
 
 class UserLogin(object):
+    """提供用户登录验证工具类
 
+    """
     def __init__(self):
         pass
 
     @staticmethod
     @is_init_username(Setting.get_value("username"))
     def get_token():
+        """获取api token
+
+        为知笔记默认token有效期为20分钟，如果本地token在有效期之内，则从本地获取，如果不在，则在线获取
+        """
         token_time = time.strptime(Setting.get_value("token_time"),
                                    '%Y-%m-%d %H:%M:%S')
         token_time = time.mktime(token_time)

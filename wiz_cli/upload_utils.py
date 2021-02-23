@@ -13,7 +13,14 @@ from wiz_cli.parse_utils import *
 
 
 class UploadNote(object):
+    """提供笔记上传功能工具类
 
+    参数:
+        file 笔记
+        category 为知笔记目录
+
+    笔记上传流程： 创建空笔记 -> 上传笔记图片资源至为知服务器 -> 笔记替换资源url -> 更新笔记
+    """
     def __init__(self, file, category):
         UserLogin.get_token()
         self.file = file

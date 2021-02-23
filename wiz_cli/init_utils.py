@@ -18,6 +18,12 @@ class InitConfig(object):
         home_dir 家目录
         config_dir 配置目录
         config_file 配置文件
+        log_file 日志文件
+        kb_server 笔记存储服务器地址
+        kb_guid 用户唯一标识号
+        token api认证票据
+        token token生成时间
+        wiz_server 为知笔记用户登录服务器
     """
 
     def __init__(self):
