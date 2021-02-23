@@ -15,7 +15,7 @@ with codecs.open('README.rst', encoding='utf-8') as f:
 
 setup(
     name="wiznote-cli",
-    version="0.0.1",
+    version="0.0.2",
     author="tyrantlucifer",
     author_email="tyrantlucifer@gmail.com",
     description="The command client of WizNote",
