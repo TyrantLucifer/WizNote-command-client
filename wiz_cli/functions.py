@@ -48,3 +48,7 @@ class Display(object):
         for category in category_list:
             print(category)
 
+    @staticmethod
+    def display_version():
+        print(init_config.version)
+

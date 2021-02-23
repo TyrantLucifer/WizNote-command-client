@@ -23,7 +23,10 @@ class UserLogin(object):
         token_time = time.mktime(token_time)
         current_time = time.time()
         if current_time - token_time > 120:
+            logger.info("Get token from online.")
             UserLogin.get_token_online()
+        else:
+            logger.info("Get token from local.")
 
     @staticmethod
     def get_token_online():
