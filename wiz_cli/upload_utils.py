@@ -85,7 +85,7 @@ class UploadNote(object):
         resources = parse_markdown.get_all_resources()
         for resource in resources:
             if re.match(pattern, resource):
-                logger.info("Resource: {0} doesn't need be upload.")
+                logger.info("Resource: {0} doesn't need be upload.".format(resource))
             else:
                 name, url = self.upload_resource(resource)
                 resources_list.append(name)
