@@ -79,22 +79,24 @@ class UploadNote(object):
             logger.error("Upload resource: {0} failed.".format(resource))
 
     def upload_note(self):
+        pattern = r'(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?'
         resources_list = list()
         parse_markdown = ParseMarkdown(self.file)
         resources = parse_markdown.get_all_resources()
         for resource in resources:
-            name, url = self.upload_resource(resource)
-            resources_list.append(name)
-            parse_markdown.content = parse_markdown.content.replace(resource, url)
+            if re.match(pattern, resource):
+                logger.info("Resource: {0} doesn't need be upload.")
+            else:
+                name, url = self.upload_resource(resource)
+                resources_list.append(name)
+                parse_markdown.content = parse_markdown.content.replace(resource, url)
         data = {
             "html": parse_markdown.content,
             "resources": resources_list,
             "docGuid": self.doc_guid,
             "kbGuid": Setting.get_value("kb_guid")
         }
-
         self.headers['Content-Type'] = "application/json"
-
         upload_url = "{0}/ks/note/save/{1}/{2}".format(Setting.get_value("kb_server"),
                                                        Setting.get_value("kb_guid"),
                                                        self.doc_guid)
