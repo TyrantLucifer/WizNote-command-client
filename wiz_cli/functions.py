@@ -7,6 +7,7 @@
 @desc: 为主函数main提供功能封装
 """
 from wiz_cli.upload_utils import *
+from wiz_cli.print_utils import *
 
 
 class UpdateConfigurations(object):
@@ -40,28 +41,49 @@ class Upload(object):
     @staticmethod
     @calculate
     def upload(file, category):
-        upload_note = UploadNote(file, category)
+        upload_note = UploadNote(file, category=category)
         upload_note.upload()
+
+    @staticmethod
+    @calculate
+    def update(file, doc_guid):
+        upload_note = UploadNote(file)
+        upload_note.update(doc_guid)
 
 
 class Display(object):
     """显示信息工具类
 
+    属性:
+        get_info 获取信息工具类
     方法:
         display_version 显示版本号
         display_categories 显示笔记目录列表
     """
+    get_info = GetInfo()
+    category_list_table = DrawCategoryListTable()
+    note_list_table = DrawNoteListTable()
+
     def __init__(self):
         pass
 
     @staticmethod
     def display_categories():
-        get_info = GetInfo()
-        category_list = get_info.get_all_categories()
+        category_list = Display.get_info.get_all_categories()
         for category in category_list:
-            print(category)
+            Display.category_list_table.append(name=category)
+        Display.category_list_table.print()
 
     @staticmethod
     def display_version():
         print(init_config.version)
+
+    @staticmethod
+    def display_notes(category):
+        note_list = Display.get_info.get_all_notes(category)
+        for note in note_list:
+            Display.note_list_table.append(title=note["title"],
+                                           doc_guid=note["doc_guid"])
+        Display.note_list_table.print()
+
 

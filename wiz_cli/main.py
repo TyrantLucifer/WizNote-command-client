@@ -15,11 +15,14 @@ def get_parser():
                                      epilog='Powered by tyrantlucifer. If you have any questions, you can send e-mail '
                                             'to tyrantlucifer@gmail.com')
 
-    parser.add_argument("-su", "--set-username", metavar="username", help="set wiz username")
-    parser.add_argument("-sp", "--set-password", metavar="password", help="set wiz password")
-    parser.add_argument("-c", "--category", metavar="category", help="assign note category")
-    parser.add_argument("-u", "--upload", metavar="file", help="assign note file")
-    parser.add_argument("-lc", "--list-category", action="store_true", help="list all valid category")
+    parser.add_argument("--set-username", metavar="username", help="set wiz username")
+    parser.add_argument("--set-password", metavar="password", help="set wiz password")
+    parser.add_argument("--category", metavar="category", help="assign note category")
+    parser.add_argument("--upload", metavar="file", help="assign note file")
+    parser.add_argument("--update", metavar="file", help="update note")
+    parser.add_argument("--doc-guid", metavar="doc_guid", help="the doc guid of note")
+    parser.add_argument("--list-category", action="store_true", help="list all valid category")
+    parser.add_argument("--list-note", metavar="category", help="list all notes in category")
     parser.add_argument("-v", "--version", action="store_true", help="display version")
     return parser
 
@@ -32,9 +35,14 @@ def main():
     elif args.set_password:
         UpdateConfigurations.update_password(args.set_password)
     elif args.upload and args.category:
+        print(1)
         Upload.upload(args.upload, args.category)
+    elif args.update and args.doc_guid:
+        Upload.update(args.update, args.doc_guid)
     elif args.list_category:
         Display.display_categories()
+    elif args.list_note:
+        Display.display_notes(args.list_note)
     elif args.version:
         Display.display_version()
     else:

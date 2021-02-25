@@ -15,7 +15,7 @@ with codecs.open('README.rst', encoding='utf-8') as f:
 
 setup(
     name="wiznote-cli",
-    version="0.0.2",
+    version="0.0.3",
     author="tyrantlucifer",
     author_email="tyrantlucifer@gmail.com",
     description="The command client of WizNote",
@@ -30,7 +30,8 @@ setup(
     },
     install_requires=[
         "requests",
-        "requests_toolbelt"
+        "requests_toolbelt",
+        "prettytable"
     ],
     classifiers=[
         'License :: OSI Approved :: MIT License',

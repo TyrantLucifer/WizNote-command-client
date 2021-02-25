@@ -7,6 +7,7 @@
 @desc: 
 """
 import json
+from urllib.parse import urlencode
 from requests_toolbelt.multipart.encoder import MultipartEncoder
 from wiz_cli.login_utils import *
 from wiz_cli.parse_utils import *
@@ -21,7 +22,7 @@ class UploadNote(object):
 
     笔记上传流程： 创建空笔记 -> 上传笔记图片资源至为知服务器 -> 笔记替换资源url -> 更新笔记
     """
-    def __init__(self, file, category):
+    def __init__(self, file, category=None):
         UserLogin.get_token()
         self.file = file
         self.category = category
@@ -112,11 +113,18 @@ class UploadNote(object):
         self.upload_empty_note()
         self.upload_note()
 
+    def update(self, doc_guid):
+        self.doc_guid = doc_guid
+        self.upload_note()
+
 
 class GetInfo(object):
 
-    def __init__(self):
+    def __init__(self, start=0, count=100, order_by="created"):
         UserLogin.get_token()
+        self.start = start
+        self.count = count
+        self.order_by = order_by
         self.headers = {
             "X-Wiz-Token": Setting.get_value("token")
         }
@@ -132,3 +140,27 @@ class GetInfo(object):
         else:
             logger.error("Get all list of categories failed.")
             logger.error("Failed reason: {0}".format(result_dict['returnMessage']))
+
+    def get_all_notes(self, category):
+        note_list = list()
+        request_url = "{0}/ks/note/list/category/{1}".format(Setting.get_value("kb_server"),
+                                                             Setting.get_value("kb_guid"))
+        params = {
+            "start": self.start,
+            "count": self.count,
+            "orderBy": self.order_by,
+            "category": category
+        }
+        request_url = request_url + '?' + urlencode(params)
+        result = requests.get(request_url, headers=self.headers)
+        result_dict = result.json()
+        if result_dict["returnCode"] == 200:
+            for i in result_dict["result"]:
+                note = dict()
+                note["title"] = i["title"]
+                note["doc_guid"] = i["docGuid"]
+                note_list.append(note)
+            return note_list
+        else:
+            logger.error("Get all notes of {0} failed.".format(category))
+            logger.error("Failed reason: {0}".format(result_dict["returnMessage"]))
