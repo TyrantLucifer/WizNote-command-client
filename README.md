@@ -2,7 +2,7 @@
 在命令行下使用的一款WizNote客户端
 
 ## 前言
-我是一名IT从业者，在职业成长的道路上需要不断的进行学习，可是人的脑容量始终有限，随着年龄的增长，人的记忆力也会随之下降，所以从古时候才会有这么一句话，`好记性不如烂笔头`，时刻记录自己的知识，丰富属于自己的知识库显得十分重要，这就引出来了另外一个概念：`笔记`
+我是一名IT从业者，在职业成长的道路上需要不断地进行学习，可是人的脑容量始终有限，随着年龄的增长，人的记忆力也会随之下降，所以从古时候才会有这么一句话，`好记性不如烂笔头`，时刻记录自己的知识，丰富属于自己的知识库显得十分重要，这就引出来了另外一个概念：`笔记`
 
 现在市面上有很多云笔记产品可以选择，比较出名的有`印象笔记`、`有道云笔记`、`为知笔记`等，这些都是很优秀的笔记产品，今天开源的项目就是关于我使用的笔记产品`为知笔记`进行开发的，我选择`为知笔记`的理由有以下几点：
 
@@ -22,7 +22,14 @@ Linux平台是我的主力系统之一，所以支持Linux才是我选择一款�
 
 ![image-20210223205307920](https://cdn.jsdelivr.net/gh/TyrantLucifer/MyImageRepository/img/image-20210223205307920.png)
 
-目前`0.0.1`版本只实现了笔记markdown笔记上传和列出笔记目录的功能，我认为目前这两个功能是刚需，是完成这个基本工作流的必备条件，如果有新的想法可以提issue或者提交pr，欢迎各位为知儿们头脑风暴。
+目前`0.0.3`版本实现了一下功能：
+- 动态获取token，如果token有效期未过，则从本地获取
+- 列出当前目录列表
+- 列出某个目录的所有笔记
+- 上传笔记
+- 更新笔记
+
+如果有新的想法可以提issue或者提交pr，欢迎各位为知儿们头脑风暴。
 
 ## 安装方式
 
@@ -42,45 +49,56 @@ pip(pip3) install wiznote-cli
 
 ## 使用方法
 
-```shell
-usage:  wiznote-cli [-h] [-su username] [-sp password] [-c category] [-u file] [-lc] [-v]
+```
+usage: wiznote-cli [-h] [--set-username username] [--set-password password]
+                   [--category category] [--upload file] [--update file]
+                   [--doc-guid doc_guid] [--list-category]
+                   [--list-note category] [-v]
 
 The wiz note command client based python.
 
 optional arguments:
   -h, --help            show this help message and exit
-  -su username, --set-username username
+  --set-username username
                         set wiz username
-  -sp password, --set-password password
+  --set-password password
                         set wiz password
-  -c category, --category category
-                        assign note category
-  -u file, --upload file
-                        assign note file
-  -lc, --list-category  list all valid category
+  --category category   assign note category
+  --upload file         assign note file
+  --update file         update note
+  --doc-guid doc_guid   the doc guid of note
+  --list-category       list all valid category
+  --list-note category  list all notes in category
   -v, --version         display version
 
-Powered by tyrantlucifer. If you have any questions, you can send e-mail to tyrantlucifer@gmail.com
+Powered by tyrantlucifer. If you have any questions, you can send e-mail to
+tyrantlucifer@gmail.com
 ```
 
 - 上传笔记
 
 ```shell
-wiznote-cli -u 我的笔记.md -c "/Notes/"
+wiznote-cli --upload 我的笔记.md --category "/Notes/"
 ```
 
 - 查看目前有哪些日记目录
 
 ```shell
-wiznote-cli -lc
+wiznote-cli --list-category
 ```
 
 - 设置为知笔记用户名和密码
 
 ```shell
-wiznote-cli -su 用户名
-wiznote-cli -sp 密码
+wiznote-cli --set-username 用户名
+wiznote-cli --set-password 密码
 ```
+
+## Todo
+
+- [ ] 创建目录
+- [ ] 删除笔记
+- [ ] 笔记搜索功能
 
 ## 支持开源:heart:, 请作者喝杯星巴克
 
