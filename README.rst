@@ -9,6 +9,7 @@ Features
 
 - Support upload markdown file from local to wiz server
 - Support list all categories of wiz note
+- Support list all notes in one category
 
 How to install
 --------------
@@ -32,24 +33,29 @@ Usage
 
 ::
 
-    usage:  wiznote-cli [-h] [-su username] [-sp password] [-c category] [-u file] [-lc] [-v]
+    usage: wiznote-cli [-h] [--set-username username] [--set-password password]
+                   [--category category] [--upload file] [--update file]
+                   [--doc-guid doc_guid] [--list-category]
+                   [--list-note category] [-v]
 
-    The wiz note command client based python.
+The wiz note command client based python.
 
-    optional arguments:
-      -h, --help            show this help message and exit
-      -su username, --set-username username
-                            set wiz username
-      -sp password, --set-password password
-                            set wiz password
-      -c category, --category category
-                            assign note category
-      -u file, --upload file
-                            assign note file
-      -lc, --list-category  list all valid category
-      -v, --version         display version
+optional arguments:
+  -h, --help            show this help message and exit
+  --set-username username
+                        set wiz username
+  --set-password password
+                        set wiz password
+  --category category   assign note category
+  --upload file         assign note file
+  --update file         update note
+  --doc-guid doc_guid   the doc guid of note
+  --list-category       list all valid category
+  --list-note category  list all notes in category
+  -v, --version         display version
 
-    Powered by tyrantlucifer. If you have any questions, you can send e-mail to tyrantlucifer@gmail.com
+Powered by tyrantlucifer. If you have any questions, you can send e-mail to
+tyrantlucifer@gmail.com
 
 
 Documentation
