@@ -60,15 +60,20 @@ class Display(object):
         display_version 显示版本号
         display_categories 显示笔记目录列表
     """
-    get_info = GetInfo()
+    get_info = None
     category_list_table = DrawCategoryListTable()
     note_list_table = DrawNoteListTable()
 
     def __init__(self):
         pass
+    
+    @staticmethod
+    def _get_info():
+        Display.get_info = GetInfo()
 
     @staticmethod
     def display_categories():
+        Display._get_info()
         category_list = Display.get_info.get_all_categories()
         for category in category_list:
             Display.category_list_table.append(name=category)
@@ -80,6 +85,7 @@ class Display(object):
 
     @staticmethod
     def display_notes(category):
+        Display._get_info()
         note_list = Display.get_info.get_all_notes(category)
         for note in note_list:
             Display.note_list_table.append(title=note["title"],
