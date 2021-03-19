@@ -27,7 +27,7 @@ class InitConfig(object):
     """
 
     def __init__(self):
-        self.version = "0.0.3"
+        self.version = "0.0.4"
         self.username = "admin"
         self.password = "admin"
         self.kb_server = ""
