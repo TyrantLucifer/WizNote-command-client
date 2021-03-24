@@ -22,7 +22,7 @@ Linux平台是我的主力系统之一，所以支持Linux才是我选择一款�
 
 ![image-20210223205307920](https://cdn.jsdelivr.net/gh/TyrantLucifer/MyImageRepository/img/image-20210223205307920.png)
 
-目前`0.0.4`版本实现了一下功能：
+目前`0.0.5`版本实现了一下功能：
 - 动态获取token，如果token有效期未过，则从本地获取
 - 列出当前目录列表
 - 列出某个目录的所有笔记
