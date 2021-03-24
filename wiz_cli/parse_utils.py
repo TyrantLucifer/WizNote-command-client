@@ -17,6 +17,8 @@ class ParseMarkdown(object):
     def __init__(self, file):
         with open(file, "r", encoding='utf-8') as f:
             self.content = f.read()
+        self.content = self.content.replace('<', '&lt;')
+        self.content = self.content.replace('>', '&gt;')
         self.content = "<html><body><pre>" + self.content + "</pre></body></html>"
 
     def get_all_resources(self):
